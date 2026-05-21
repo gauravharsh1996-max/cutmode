@@ -155,8 +155,7 @@ async function main() {
         title: "Deficit Builder",
         description: "Reached 60% of the rolling 10-day deficit target"
       }
-    ],
-    skipDuplicates: true
+    ]
   });
 }
 
