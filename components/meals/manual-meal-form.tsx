@@ -35,9 +35,13 @@ export function ManualMealForm() {
 
   return (
     <form
-      action={submit}
-      className="surface p-4"
-     >
+  onSubmit={async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    await submit(formData);
+  }}
+  className="surface p-4"
+>
       <div className="flex items-center gap-2">
         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-matcha/14 text-matcha">
           <Plus className="h-5 w-5" />
