@@ -19,9 +19,9 @@ export async function GET(request: NextRequest) {
       const items = await prisma.foodItem.findMany({
         where: {
           OR: [
-            { name: { contains: query, mode: "insensitive" } },
-            { category: { contains: query, mode: "insensitive" } },
-            { cuisine: { contains: query, mode: "insensitive" } }
+           { name: { contains: query } },
+           { category: { contains: query } },
+           { cuisine: { contains: query } },
           ]
         },
         take: 20,
