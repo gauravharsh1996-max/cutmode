@@ -28,7 +28,12 @@ export function ManualMealForm() {
     }),
   });
 
+  const data = await response.json();
+
+  console.log("API RESPONSE:", data);
+
   if (!response.ok) {
+    alert(JSON.stringify(data));
     throw new Error("Failed to save meal");
   }
 
