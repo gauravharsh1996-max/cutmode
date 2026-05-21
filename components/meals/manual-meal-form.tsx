@@ -34,7 +34,11 @@ export function ManualMealForm() {
   }
 
   return (
-    <form action={submit} className="surface p-4">
+    <form
+      action={submit}
+      className="surface p-4"
+       onSubmit={(e) => e.preventDefault()}
+     >
       <div className="flex items-center gap-2">
         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-matcha/14 text-matcha">
           <Plus className="h-5 w-5" />
@@ -71,9 +75,9 @@ export function ManualMealForm() {
       <div className="mt-4 flex items-center justify-between gap-3">
         <p className="text-sm text-black/55 dark:text-white/55">{status}</p>
         <Button type="submit">
-          <Save className="h-4 w-4" />
-          Save
-        </Button>
+         <Save className="h-4 w-4" />
+         Save meal
+      </Button>
       </div>
     </form>
   );
