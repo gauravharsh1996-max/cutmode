@@ -25,6 +25,7 @@ export function ManualMealForm() {
         })
       });
       setStatus("Meal saved");
+      window.location.reload();
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Could not save meal");
     }
