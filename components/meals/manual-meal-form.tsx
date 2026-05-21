@@ -13,9 +13,12 @@ export function ManualMealForm() {
     const payload = Object.fromEntries(formData.entries());
 
     try {
-      await apiClient("/api/meals", {
-        method: "POST",
-        body: JSON.stringify({
+      await fetch("/api/meals", {
+       method: "POST",
+       headers: {
+         "Content-Type": "application/json",
+       },
+       body: JSON.stringify({
           name: payload.name,
           calories: Number(payload.calories),
           protein: Number(payload.protein),
