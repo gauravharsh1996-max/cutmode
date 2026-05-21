@@ -25,7 +25,7 @@ export function ManualMealForm() {
         })
       });
       setStatus("Meal saved");
-      window.location.reload();
+      location.reload();
     } catch (error) {
         console.error(error);
         setStatus(error instanceof Error ? error.message : "Could not save meal");
@@ -37,7 +37,6 @@ export function ManualMealForm() {
     <form
       action={submit}
       className="surface p-4"
-       onSubmit={(e) => e.preventDefault()}
      >
       <div className="flex items-center gap-2">
         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-matcha/14 text-matcha">
