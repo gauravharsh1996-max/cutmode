@@ -37,6 +37,9 @@ export function ManualMealForm() {
     <form
   onSubmit={async (e) => {
     e.preventDefault();
+
+    alert("SUBMIT WORKING");
+
     const formData = new FormData(e.currentTarget);
     await submit(formData);
   }}
