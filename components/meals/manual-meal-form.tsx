@@ -28,7 +28,9 @@ export function ManualMealForm() {
         })
       });
       setStatus("Meal saved");
-      location.reload();
+      setTimeout(() => {
+        location.reload();
+      }, 800);
     } catch (error) {
         console.error(error);
         setStatus(error instanceof Error ? error.message : "Could not save meal");
