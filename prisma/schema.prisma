@@ -1,0 +1,299 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Sex {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum ActivityLevel {
+  SEDENTARY
+  LIGHT
+  MODERATE
+  ACTIVE
+  VERY_ACTIVE
+}
+
+enum MealSource {
+  MANUAL
+  AI_PHOTO
+  BARCODE
+  CUSTOM
+  RESTAURANT
+}
+
+enum WorkoutKind {
+  GYM
+  CARDIO
+  TREADMILL
+  SPORT
+  TEMPLATE
+  RECOVERY
+}
+
+enum CravingStatus {
+  LOGGED
+  FITTED
+  SWAPPED
+  PLANNED
+}
+
+enum NotificationKind {
+  PROTEIN
+  HYDRATION
+  MEAL
+  WORKOUT
+  SLEEP
+  WEIGH_IN
+}
+
+model User {
+  id                      String                   @id @default(cuid())
+  clerkId                 String                   @unique
+  email                   String                   @unique
+  name                    String?
+  imageUrl                String?
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
+  goal                    Goal?
+  meals                   Meal[]
+  workouts                Workout[]
+  weightLogs              WeightLog[]
+  cravingLogs             CravingLog[]
+  progressPhotos          ProgressPhoto[]
+  bodyMeasurements        BodyMeasurement[]
+  waterLogs               WaterLog[]
+  sleepLogs               SleepLog[]
+  notificationPreferences NotificationPreference[]
+  reports                 WeeklyReport[]
+  achievements            Achievement[]
+}
+
+model Goal {
+  id                  String        @id @default(cuid())
+  userId              String        @unique
+  user                User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  calorieTarget       Int           @default(2050)
+  proteinTarget       Int           @default(130)
+  tenDayDeficitGoal   Int           @default(5000)
+  startWeightKg       Float?
+  currentWeightKg     Float?
+  targetWeightKg      Float?
+  heightCm            Float?
+  age                 Int?
+  sex                 Sex           @default(OTHER)
+  activityLevel       ActivityLevel @default(MODERATE)
+  maintenanceCalories Int?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+}
+
+model Meal {
+  id              String     @id @default(cuid())
+  userId          String
+  user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name            String
+servings Float @default(1)
+servingSize String?
+  source          MealSource @default(MANUAL)
+  imageUrl        String?
+  notes           String?
+  confidence      Float?
+  calories        Int
+  protein         Float
+  carbs           Float
+  fats            Float
+  fiber           Float      @default(0)
+  sodiumMg        Int?
+  loggedAt        DateTime   @default(now())
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  items           MealItem[]
+
+  @@index([userId, loggedAt])
+}
+
+model MealItem {
+  id          String   @id @default(cuid())
+  mealId      String
+  meal        Meal     @relation(fields: [mealId], references: [id], onDelete: Cascade)
+  name        String
+  serving     String
+  calories    Int
+  protein     Float
+  carbs       Float
+  fats        Float
+  fiber       Float    @default(0)
+  confidence  Float?
+  createdAt   DateTime @default(now())
+}
+
+model FoodItem {
+  id                  String   @id @default(cuid())
+  name                String
+  brand               String?
+  cuisine             String?
+  category            String
+  servingLabel        String
+  caloriesPerServing  Int
+  proteinPerServing   Float
+  carbsPerServing     Float
+  fatsPerServing      Float
+  fiberPerServing     Float    @default(0)
+  barcode             String?  @unique
+  isHighProtein       Boolean  @default(false)
+  sodiumWarning       Boolean  @default(false)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([name])
+  @@index([category])
+}
+
+model Workout {
+  id              String            @id @default(cuid())
+  userId          String
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title           String
+  kind            WorkoutKind
+  durationMinutes Int
+  caloriesBurned  Int               @default(0)
+  treadmillIncline Float?
+  averageHeartRate Int?
+  trainerNotes    String?
+  performedAt     DateTime          @default(now())
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  exercises        WorkoutExercise[]
+
+  @@index([userId, performedAt])
+}
+
+model WorkoutExercise {
+  id         String   @id @default(cuid())
+  workoutId  String
+  workout    Workout  @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+  name       String
+  sets       Int?
+  reps       Int?
+  loadKg     Float?
+  distanceKm Float?
+  notes      String?
+  createdAt  DateTime @default(now())
+}
+
+model WeightLog {
+  id                  String   @id @default(cuid())
+  userId              String
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  weightKg            Float
+  bodyFatPercentage   Float?
+  leanMassKg          Float?
+  waterRetentionNote  String?
+  loggedAt            DateTime @default(now())
+  createdAt           DateTime @default(now())
+
+  @@index([userId, loggedAt])
+}
+
+model CravingLog {
+  id              String        @id @default(cuid())
+  userId          String
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  label           String
+  intensity       Int           @default(5)
+  plannedCalories Int?
+  status          CravingStatus @default(LOGGED)
+  suggestion      String?
+  loggedAt        DateTime      @default(now())
+  createdAt       DateTime      @default(now())
+
+  @@index([userId, loggedAt])
+}
+
+model ProgressPhoto {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  imageUrl  String
+  pose      String?
+  takenAt   DateTime @default(now())
+  createdAt DateTime @default(now())
+}
+
+model BodyMeasurement {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  waistCm   Float?
+  hipCm     Float?
+  chestCm   Float?
+  armCm     Float?
+  thighCm   Float?
+  loggedAt  DateTime @default(now())
+  createdAt DateTime @default(now())
+}
+
+model WaterLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amountMl  Int
+  loggedAt  DateTime @default(now())
+  createdAt DateTime @default(now())
+}
+
+model SleepLog {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  durationHours  Float
+  quality        Int?
+  loggedAt       DateTime @default(now())
+  createdAt      DateTime @default(now())
+}
+
+model NotificationPreference {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind      NotificationKind
+  enabled   Boolean          @default(true)
+  timeLocal String?
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@unique([userId, kind])
+}
+
+model WeeklyReport {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  weekStart       DateTime
+  caloriesAverage Int
+  proteinAverage  Float
+  deficitTotal    Int
+  weightChangeKg  Float?
+  coachSummary    String
+  createdAt       DateTime @default(now())
+}
+
+model Achievement {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  code        String
+  title       String
+  description String
+  unlockedAt  DateTime @default(now())
+
+  @@unique([userId, code])
+}
