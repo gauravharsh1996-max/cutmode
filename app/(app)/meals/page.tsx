@@ -72,9 +72,9 @@ or &quot;office sandwich&quot; so future logging takes seconds.
             >
               <p className="font-semibold">{meal.name}</p>
 
-              <p className="mt-1 text-xs text-black/52 dark:text-white/52">
-                {meal.time} - {meal.source}
-              </p>
+             <p className="mt-1 text-xs text-black/52 dark:text-white/52">
+  Meal logged
+</p>
 
               <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
                 <span>{meal.calories} kcal</span>
