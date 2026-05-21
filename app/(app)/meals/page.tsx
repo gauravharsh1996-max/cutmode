@@ -111,8 +111,8 @@ or &quot;office sandwich&quot; so future logging takes seconds.
                   </h3>
 
                   <p className="text-sm text-black/60 dark:text-white/60">
-                    {meal.calories} kcal • {meal.protein}g protein
-                  </p>
+  {meal.calories} kcal - {meal.protein}g protein
+</p>
                 </div>
 
                 <div className="text-right text-sm">
