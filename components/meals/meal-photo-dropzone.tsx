@@ -95,7 +95,7 @@ export function MealPhotoDropzone() {
 
         <h2 className="mt-4 text-xl font-semibold">Upload a meal photo</h2>
         <p className="mt-2 max-w-md text-sm text-black/58 dark:text-white/58">
-          Drop a plate photo here. Add context like "homemade paneer, two rotis" for better Indian-food estimates.
+          Drop a plate photo here. Add context like &quot;homemade paneer, two rotis&quot; for better Indian-food estimates.
         </p>
         <div className="mt-4 grid w-full max-w-xl gap-3 sm:grid-cols-[1fr_auto]">
           <input
