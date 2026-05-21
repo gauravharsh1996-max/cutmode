@@ -12,30 +12,41 @@ export function ManualMealForm() {
     setStatus("Saving meal...");
     const payload = Object.fromEntries(formData.entries());
 
-    try {
-      await fetch("/api/meals", {
-       method: "POST",
-       headers: {
-         "Content-Type": "application/json",
-       },
-       body: JSON.stringify({
-          name: payload.name,
-          calories: Number(payload.calories),
-          protein: Number(payload.protein),
-          carbs: Number(payload.carbs),
-          fats: Number(payload.fats),
-          source: "MANUAL"
-        })
-      });
-      setStatus("Meal saved");
-      setTimeout(() => {
-        location.reload();
-      }, 800);
-    } catch (error) {
-        console.error(error);
-        setStatus(error instanceof Error ? error.message : "Could not save meal");
+  try {
+  const response = await fetch("/api/meals", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: payload.name,
+      calories: Number(payload.calories),
+      protein: Number(payload.protein),
+      carbs: Number(payload.carbs),
+      fats: Number(payload.fats),
+      source: "MANUAL",
+    }),
+  });
 
+  if (!response.ok) {
+    throw new Error("Failed to save meal");
   }
+
+  setStatus("Meal saved");
+
+  setTimeout(() => {
+    location.reload();
+  }, 800);
+
+} catch (error) {
+  console.error(error);
+
+  setStatus(
+    error instanceof Error
+      ? error.message
+      : "Could not save meal"
+  );
+}
   }
 
   return (
