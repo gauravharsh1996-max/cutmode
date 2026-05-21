@@ -27,8 +27,10 @@ export function ManualMealForm() {
       setStatus("Meal saved");
       window.location.reload();
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Could not save meal");
-    }
+        console.error(error);
+        setStatus(error instanceof Error ? error.message : "Could not save meal");
+
+  }
   }
 
   return (
@@ -68,7 +70,7 @@ export function ManualMealForm() {
 
       <div className="mt-4 flex items-center justify-between gap-3">
         <p className="text-sm text-black/55 dark:text-white/55">{status}</p>
-        <Button>
+        <Button type="submit">
           <Save className="h-4 w-4" />
           Save
         </Button>
