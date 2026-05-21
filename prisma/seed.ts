@@ -44,7 +44,6 @@ async function main() {
       isHighProtein: food.isHighProtein ?? false,
       sodiumWarning: food.sodiumWarning ?? false
     })),
-    skipDuplicates: true
   });
 
   const meals = [
