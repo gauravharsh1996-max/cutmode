@@ -55,8 +55,8 @@ export default async function MealsPage() {
           </div>
 
           <p className="mt-3 text-sm leading-6 text-black/62 dark:text-white/62">
-            Save repeat meals like "home chicken bowl"
-            or "office sandwich" so future logging takes seconds.
+            Save repeat meals like &quot;home chicken bowl&quot;
+or &quot;office sandwich&quot; so future logging takes seconds.
           </p>
         </section>
       </div>
